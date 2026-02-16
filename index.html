@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Angoseguros | Consultoria de Seguros de Elite em Angola</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FDFDFF; color: #334155; }
+        .not-italic { font-style: normal !important; }
+        
+        /* Glassmorphism & Crystal Effects */
+        .glass { background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.7); }
+        .glass-silver { background: linear-gradient(135deg, rgba(241, 245, 249, 0.9) 0%, rgba(203, 213, 225, 0.4) 100%); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.8); }
+        
+        /* Metallic Silver Text */
+        .silver-metallic {
+            background: linear-gradient(135deg, #94a3b8 0%, #f1f5f9 50%, #475569 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Crystalline Silver Metallic Radio Buttons (Piscos) */
+        .silver-pisco {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #cbd5e1;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #94a3b8 100%);
+            cursor: pointer;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.8);
+            transition: all 0.3s ease;
+        }
+        .silver-pisco:checked {
+            border-color: #94a3b8;
+            background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 50%, #475569 100%);
+            box-shadow: 0 0 12px rgba(148, 163, 184, 0.3);
+        }
+        .silver-pisco:checked::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #cbd5e1 45%, #64748b 100%);
+        }
+
+        /* Partners Marquee */
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 35s linear infinite; }
+        .animate-marquee:hover { animation-play-state: paused; }
+
+        /* Card Flip Effect */
+        .flip-card { perspective: 1000px; min-height: 220px; }
+        .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.8s; transform-style: preserve-3d; cursor: pointer; }
+        .flip-card:hover .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 0px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
+        .flip-back { transform: rotateY(180deg); background: white; border: 1px solid rgba(0,27,68,0.1); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #001B44; border-radius: 10px; }
+
+        /* Document Modal Styles */
+        .doc-modal-body { max-height: 50vh; overflow-y: auto; font-size: 10px; line-height: 1.6; padding-right: 15px; }
+        .doc-modal-body::-webkit-scrollbar { width: 3px; }
+    </style>
+</head>
+<body class="not-italic overflow-x-hidden">
+
+    <!-- Cookies Banner -->
+    <div id="cookieBanner" class="fixed bottom-6 left-6 right-6 z-[300] transition-all duration-700">
+        <div class="max-w-4xl mx-auto glass rounded-[32px] p-6 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6 border border-slate-200">
+            <div class="flex items-center gap-4 text-left">
+                <div class="w-12 h-12 rounded-full bg-[#001B44] flex items-center justify-center text-white shrink-0 shadow-lg">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5" />
+                        <circle cx="8.5" cy="8.5" r=".5" fill="currentColor"/>
+                        <circle cx="16" cy="15.5" r=".5" fill="currentColor"/>
+                        <circle cx="12" cy="12" r=".5" fill="currentColor"/>
+                        <circle cx="11" cy="17" r=".5" fill="currentColor"/>
+                        <circle cx="7" cy="14" r=".5" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div class="space-y-1">
+                    <h4 class="text-[10px] font-black text-[#001B44] uppercase tracking-widest">Protecção de Dados e Privacidade</h4>
+                    <p class="text-[9px] text-slate-500 uppercase leading-relaxed font-semibold">Utilizamos cookies para garantir a segurança e a distinção da sua navegação institucional</p>
+                </div>
+            </div>
+            <div class="flex gap-3 shrink-0">
+                <button onclick="toggleModal('privacyModal')" class="px-6 py-2 text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-[#001B44] transition-colors">Configurar</button>
+                <button onclick="closeCookies()" class="px-8 py-2.5 bg-[#001B44] text-white text-[10px] font-black rounded-xl uppercase tracking-widest shadow-lg hover:scale-105 transition-all">Aceitar Tudo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation (Reduced Menu Font Size) -->
+    <nav id="navbar" class="fixed w-full z-[200] transition-all duration-500 py-4 glass border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-2 text-left">
+                <div class="bg-[#001B44] p-2 rounded-lg shadow-lg">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div class="flex flex-col leading-tight">
+                    <span class="text-lg md:text-xl font-black tracking-tighter text-[#001B44] uppercase">ANGOSEGUROS</span>
+                    <span class="text-[8px] font-bold tracking-[0.25em] opacity-70 text-[#001B44] uppercase">Corretora de Seguros</span>
+                </div>
+            </div>
+            <!-- Reduced font size text-[8.5px] -->
+            <div class="hidden lg:flex items-center gap-8">
+                <a href="#início" class="text-[8.5px] font-black text-[#001B44] uppercase tracking-[0.2em] hover:opacity-50 transition-opacity">Início</a>
+                <a href="#sobre-nós" class="text-[8.5px] font-black text-[#001B44] uppercase tracking-[0.2em] hover:opacity-50 transition-opacity">Institucional</a>
+                <a href="#segmentos" class="text-[8.5px] font-black text-[#001B44] uppercase tracking-[0.2em] hover:opacity-50 transition-opacity">Segmentos</a>
+                <a href="#sectores" class="text-[8.5px] font-black text-[#001B44] uppercase tracking-[0.2em] hover:opacity-50 transition-opacity">Sectores</a>
+                <a href="#equipa" class="text-[8.5px] font-black text-[#001B44] uppercase tracking-[0.2em] hover:opacity-50 transition-opacity">Equipa</a>
+                <button onclick="toggleModal('contactModal')" class="bg-[#001B44] text-white px-5 py-2 rounded-full text-[8.5px] font-black uppercase tracking-widest shadow-xl hover:scale-105 transition-all">Pedir Proposta</button>
+            </div>
+            <button class="lg:hidden text-[#001B44]" onclick="toggleMobileMenu()">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 z-[250] bg-white/40 backdrop-blur-3xl hidden flex-col">
+        <div class="p-6 flex justify-between items-center border-b border-slate-200">
+            <span class="text-xl font-black text-[#001B44] uppercase tracking-tighter">Menu Elite</span>
+            <button onclick="toggleMobileMenu()" class="p-2 bg-white/60 rounded-full text-[#001B44] shadow-md"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <div class="flex-1 flex flex-col items-center justify-center gap-10">
+            <a href="#início" onclick="toggleMobileMenu()" class="text-2xl font-black text-[#001B44] uppercase tracking-[0.2em]">Início</a>
+            <a href="#sobre-nós" onclick="toggleMobileMenu()" class="text-2xl font-black text-[#001B44] uppercase tracking-[0.2em]">Institucional</a>
+            <a href="#segmentos" onclick="toggleMobileMenu()" class="text-2xl font-black text-[#001B44] uppercase tracking-[0.2em]">Segmentos</a>
+            <a href="#equipa" onclick="toggleMobileMenu()" class="text-2xl font-black text-[#001B44] uppercase tracking-[0.2em]">Equipa</a>
+            <button onclick="toggleMobileMenu(); toggleModal('contactModal');" class="bg-[#001B44] text-white px-12 py-5 rounded-2xl text-base font-black uppercase tracking-widest shadow-2xl">Proposta</button>
+        </div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="início" class="relative pt-60 pb-32 px-6 text-center z-10">
+        <div class="max-w-5xl mx-auto space-y-12">
+            <div class="inline-flex items-center gap-3 px-6 py-2.5 rounded-full glass border border-slate-200 shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-slate-400 animate-pulse"></span>
+                <span class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500 leading-none">Consultoria Estratégica Autorizada ARSEG desde 2021</span>
+            </div>
+            <h1 class="text-4xl md:text-5xl lg:text-7xl font-black leading-[1.05] tracking-tighter text-[#001B44] uppercase">
+                Onde a Confiança <br>
+                <span class="silver-metallic">Se Torna Activo</span>
+            </h1>
+            <p class="text-base md:text-xl text-slate-500 max-w-3xl mx-auto leading-relaxed font-medium">
+                Gerimos a relação entre Seguradora e Segurado com rigor absoluto, transparência técnica e expertise jurídica de elite no mercado angolano
+            </p>
+            <div class="flex justify-center pt-6">
+                <button onclick="toggleModal('contactModal')" class="bg-[#001B44] text-white px-10 py-5 rounded-2xl font-black flex items-center gap-4 shadow-2xl hover:-translate-y-1 transition-all text-sm uppercase tracking-widest">
+                    Solicitar Proposta 
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIFERENCIAL TÉCNICO -->
+    <section id="broker-info" class="py-24 px-6 relative z-10 bg-slate-50/40 text-left">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
+            <div class="space-y-8">
+                <div class="space-y-4">
+                    <span class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">Diferencial Elite</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-[#001B44] uppercase leading-tight">Corretora vs Seguradora</h2>
+                </div>
+                <p class="text-slate-600 text-[11px] font-bold uppercase leading-relaxed text-justify">
+                    A Seguradora assume o risco financeiro; a Angoseguros gere esse risco a seu favor. Nós não vendemos um produto; nós oferecemos um conselho fiel, comparamos o mercado e defendemos os seus direitos jurídicos perante as seguradoras em caso de sinistro
+                </p>
+                <div class="p-8 glass rounded-[40px] border-l-8 border-l-[#001B44] shadow-lg">
+                    <h4 class="text-xs font-black text-[#001B44] uppercase mb-4 tracking-widest">A Importância do Broker</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-slate-400"></div>
+                            <p class="text-[11px] font-bold text-slate-600 uppercase leading-tight text-justify">Custo Zero: Nossas comissões são pagas pelas seguradoras, sem acréscimo para o cliente</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-slate-400"></div>
+                            <p class="text-[11px] font-bold text-slate-600 uppercase leading-tight text-justify">Negociação Directa: Actuamos junto das seguradoras para obter as melhores taxas e coberturas</p>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <div class="mt-1 w-2 h-2 rounded-full bg-slate-400"></div>
+                            <p class="text-[11px] font-bold text-slate-600 uppercase leading-tight text-justify">Gestão de Sinistros: Assistência total na regulação e liquidação célere de indemnizações</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-8 bg-white border border-slate-200 rounded-[32px] text-left space-y-4 shadow-sm group">
+                    <div class="silver-metallic font-black text-2xl">01</div>
+                    <h4 class="font-black text-[#001B44] uppercase text-sm flex items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-300 group-hover:text-[#001B44]"><path d="M12 20h.01"/><path d="M12 4v12"/><path d="M7 8l5-4 5 4"/></svg>
+                        Consultoria
+                    </h4>
+                    <p class="text-[10px] text-slate-400 uppercase font-bold leading-relaxed">Capacidade para interpretar tendências e antecipar soluções adequadas aos seus interesses financeiros</p>
+                </div>
+                <div class="p-8 bg-white border border-slate-200 rounded-[32px] text-left space-y-4 shadow-sm group">
+                    <div class="silver-metallic font-black text-2xl">02</div>
+                    <h4 class="font-black text-[#001B44] uppercase text-sm flex items-center gap-2">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-300 group-hover:text-[#001B44]"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4"/></svg>
+                        Poder Negocial
+                    </h4>
+                    <p class="text-[10px] text-slate-400 uppercase font-bold leading-relaxed">Representamos o cliente com integridade perante o mercado para garantir a melhor protecção</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE NÓS -->
+    <section id="sobre-nós" class="py-24 px-6 relative z-10 text-left">
+        <div class="max-w-7xl mx-auto space-y-16">
+            <div class="grid md:grid-cols-2 gap-16 items-start">
+                <div class="space-y-8">
+                    <div class="space-y-4">
+                        <span class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">Institucional</span>
+                        <h2 class="text-3xl md:text-4xl font-black text-[#001B44] uppercase tracking-tighter">Sólida e Estratégica</h2>
+                    </div>
+                    <div class="w-16 h-1 bg-[#001B44] rounded-full"></div>
+                    <div class="space-y-6 text-slate-600 text-[11px] font-bold uppercase leading-relaxed text-justify">
+                        <p>A ANGO SEGUROS é uma corretora de seguros legalmente autorizada junto à ARSEG - Agência Reguladora de Seguros de Angola, criada em Agosto de 2021 para intermediar negócios. Serve para garantir que Seguradora e Segurado cumprirão com as obrigações pré-estabelecidas</p>
+                        <p>Opera com todas as Seguradoras que existem no mercado angolano que trabalham com intermediários. Nossos ganhos de comissões são pagas pelas Seguradoras conforme o ramo de seguro</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="p-8 glass-silver rounded-[40px] space-y-4 shadow-sm">
+                        <h4 class="font-black text-[#001B44] uppercase text-xs tracking-widest flex items-center gap-3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg> Confiança por Gerações</h4>
+                        <p class="text-[11px] text-slate-500 uppercase font-bold text-justify leading-relaxed">A confiança dos nossos Clientes é o nosso activo mais valioso. Ao estabelecer relações assentes no rigor e transparência, garantimos a sua permanência por gerações</p>
+                    </div>
+                    <div class="p-8 glass-silver rounded-[40px] space-y-4 shadow-sm">
+                        <h4 class="font-black text-[#001B44] uppercase text-xs tracking-widest flex items-center gap-3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Ética e Sustentabilidade</h4>
+                        <p class="text-[11px] text-slate-500 uppercase font-bold text-justify leading-relaxed">Actuamos com consciência e consequência. A ética nos negócios só é completa se garantir a melhoria das condições de vida de todos e o futuro do planeta</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MISSÃO, VISÃO E VALORES -->
+    <section id="estratégia" class="py-24 px-6 bg-[#001B44] text-white relative z-10">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 text-left">
+            <div class="space-y-4">
+                <h3 class="text-xl font-black uppercase tracking-widest silver-metallic">Missão</h3>
+                <p class="text-[10px] text-white/70 leading-relaxed uppercase font-black text-justify">Criar valor para o Cliente através da prestação de serviços de qualidade superior nos domínios do aconselhamento e cobertura de riscos financeiros e de pessoas</p>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-xl font-black uppercase tracking-widest silver-metallic">Visão</h3>
+                <p class="text-[10px] text-white/70 leading-relaxed uppercase font-black text-justify">Posicionar-se como a corretora de referência no serviço ao cliente em Angola, liderando na oferta de protecção sobre pessoas e bens através de inovação e proximidade</p>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-xl font-black uppercase tracking-widest silver-metallic">Valores</h3>
+                <p class="text-[10px] text-white/70 leading-relaxed uppercase font-black text-justify">Observamos rigorosos e elevados padrões de conduta e responsabilidade corporativa, crescendo com integridade e transparência em todas as operações</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEGMENTOS DE ACTUAÇÃO -->
+    <section id="segmentos" class="py-24 px-6 relative z-10">
+        <div class="max-w-7xl mx-auto text-center space-y-16">
+            <h2 class="text-3xl font-black text-[#001B44] uppercase tracking-tighter">Segmentos de Actuação</h2>
+            <div class="grid md:grid-cols-2 gap-8 text-left">
+                <div class="p-10 glass-silver rounded-[48px] shadow-sm space-y-6">
+                    <div class="w-12 h-12 bg-[#001B44] rounded-2xl flex items-center justify-center text-white"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+                    <h4 class="text-xl font-black uppercase text-[#001B44]">Particulares</h4>
+                    <p class="text-[10px] text-slate-500 uppercase font-black leading-relaxed text-justify">Disponibilizamos uma prestação de serviço ampla para as necessidades diárias das famílias angolanas: Saúde, Automóvel, Vida, Acidentes Pessoais e Viagem</p>
+                </div>
+                <div class="p-10 glass-silver rounded-[48px] shadow-sm space-y-6">
+                    <div class="w-12 h-12 bg-[#001B44] rounded-2xl flex items-center justify-center text-white"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+                    <h4 class="text-xl font-black uppercase text-[#001B44]">Empresas</h4>
+                    <p class="text-[10px] text-slate-500 uppercase font-black leading-relaxed text-justify">Soluções especializadas à medida de cada negócio, mitigando riscos operacionais, de frotas, acidentes de trabalho e multirrisco industrial</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTOR DE ACTIVIDADE -->
+    <section id="sectores" class="py-24 px-6 relative z-10 text-left text-[#001B44]">
+        <div class="max-w-7xl mx-auto">
+            <div class="glass border border-slate-200 rounded-[56px] p-8 md:p-16 shadow-xl relative overflow-hidden">
+                <div class="relative z-10 grid lg:grid-cols-5 gap-12 items-start">
+                    <div class="lg:col-span-2 space-y-8">
+                        <div class="space-y-4">
+                            <span class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Consultoria Sectorial</span>
+                            <h2 class="text-3xl font-bold leading-tight uppercase">Soluções por Sector</h2>
+                        </div>
+                        <p class="text-slate-600 text-[11px] font-bold uppercase leading-relaxed text-justify">Disponibilizamos opções diversificadas para agricultura, construção, comércio, indústria ou petrolífera</p>
+                    </div>
+                    <div class="lg:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div class="p-6 bg-white rounded-3xl border border-slate-100 flex flex-col items-center gap-4 text-center group transition-all hover:bg-[#001B44] hover:text-white shadow-sm">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-300 group-hover:text-white"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8a8 8 0 0 1-8 8ZM11 20c-4.4 0-8-3.6-8-8 0-4.4 3.6-8 8-8"/></svg>
+                            <span class="text-[9px] font-black uppercase tracking-widest">Agricultura</span>
+                        </div>
+                        <div class="p-6 bg-white rounded-3xl border border-slate-100 flex flex-col items-center gap-4 text-center group transition-all hover:bg-[#001B44] hover:text-white shadow-sm">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-300 group-hover:text-white"><path d="M3 21h18M9 21V9l3-3 3 3v12M9 13h6M12 9v4"/></svg>
+                            <span class="text-[9px] font-black uppercase tracking-widest">Construção</span>
+                        </div>
+                        <div class="p-6 bg-white rounded-3xl border border-slate-100 flex flex-col items-center gap-4 text-center group transition-all hover:bg-[#001B44] hover:text-white shadow-sm">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-300 group-hover:text-white"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                            <span class="text-[9px] font-black uppercase tracking-widest">Comércio</span>
+                        </div>
+                        <div class="p-6 bg-white rounded-3xl border border-slate-100 flex flex-col items-center gap-4 text-center group transition-all hover:bg-[#001B44] hover:text-white shadow-sm">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-300 group-hover:text-white"><path d="M2 20V9l7-5 7 5 7-5v11a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2Z"/><path d="M12 11v5M16 11v5M8 11v5"/></svg>
+                            <span class="text-[9px] font-black uppercase tracking-widest">Indústria</span>
+                        </div>
+                        <div class="p-6 bg-white rounded-3xl border border-slate-100 flex flex-col items-center gap-4 text-center group transition-all hover:bg-[#001B44] hover:text-white sm:col-span-2 md:col-span-1 shadow-sm">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-slate-300 group-hover:text-white">
+                                <path d="M12 2v20M8 22l2-6M16 22l-2-6M4 22l4-12M20 22l-4-12M8 10h8M6 16h12" />
+                            </svg>
+                            <span class="text-[9px] font-black uppercase tracking-widest">Petrolífera</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EQUIPA COMPLETA -->
+    <section id="equipa" class="py-24 px-6 relative z-10 text-left">
+        <div class="max-w-7xl mx-auto space-y-16">
+            <div class="text-center space-y-4">
+                <span class="text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">Composição da Equipa</span>
+                <h2 class="text-3xl font-black text-[#001B44] uppercase">Corpo Técnico Elite</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 glass rounded-[40px] border border-slate-200 shadow-sm space-y-4">
+                    <h4 class="text-lg font-black text-[#001B44] uppercase">Dra Olga Moreira</h4>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400 block border-b pb-2">Directora Geral</span>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase leading-relaxed text-justify">Dinâmica; possuidora de uma boa comunicação; espírito de equipa; especialista no ramo; vivência de mercado e negociadora de topo</p>
+                </div>
+                <div class="p-8 glass rounded-[40px] border border-slate-200 shadow-sm space-y-4">
+                    <h4 class="text-lg font-black text-[#001B44] uppercase">Dr Mario Santos</h4>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400 block border-b pb-2">Director Comercial</span>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase leading-relaxed text-justify">Conhecedor das normas e diretrizes do segmento; dinâmico; dedicada à análise de situações; coordenador fiel da equipa comercial</p>
+                </div>
+                <div class="p-8 glass rounded-[40px] border border-slate-200 shadow-sm space-y-4">
+                    <h4 class="text-lg font-black text-[#001B44] uppercase">Dra Clara Costa</h4>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400 block border-b pb-2">Resp Administrativa</span>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase leading-relaxed text-justify">Gestão rigorosa de bases de dados, preparação de orçamentos e fluxo operacional. Auxiliar nas actividades administrativas em gerais com precisão</p>
+                </div>
+            </div>
+            <div class="p-10 bg-[#001B44] rounded-[48px] text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-white/5 opacity-20 pointer-events-none"></div>
+                <div class="relative z-10 text-left md:w-2/3">
+                    <h5 class="font-black uppercase text-xs tracking-widest silver-metallic">Corpo Comercial & Gestão de Conta</h5>
+                    <p class="text-[10px] uppercase font-bold text-white/60 mt-3 leading-relaxed text-justify">Hugo Vasconcelos e Sonia Inácio: Boa habilidade comercial, dinâmicos e comunicativos. Bom relacionamento com equipa, desempenho exemplar sob pressão, lidam com hierarquias e apresentam aparência formal de excelência</p>
+                </div>
+                <button onclick="toggleModal('contactModal')" class="relative z-10 px-8 py-3 bg-white text-[#001B44] text-[10px] font-black uppercase rounded-xl tracking-widest hover:scale-105 transition-all shadow-lg shrink-0">Solicitar Contacto</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- VOCÊ SABIA? -->
+    <section id="sabedoria" class="py-24 px-6 relative z-10 text-center">
+        <div class="max-w-7xl mx-auto space-y-16">
+            <h2 class="text-3xl font-black text-[#001B44] uppercase tracking-tighter">Você Sabia?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Broker Cost -->
+                <div class="flip-card">
+                    <div class="flip-inner shadow-xl">
+                        <div class="flip-front glass-silver border border-slate-200">
+                            <div class="mb-4">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                                </svg>
+                            </div>
+                            <p class="text-[11px] font-black uppercase text-[#001B44] tracking-widest">A Corretora tem custos para o cliente</p>
+                        </div>
+                        <div class="flip-back">
+                            <p class="text-[10px] font-bold text-slate-600 uppercase leading-relaxed text-justify">Não. Os serviços de consultoria da Angoseguros são remunerados pelas seguradoras. O cliente beneficia de expertise técnica sem qualquer agravamento no prémio do seguro</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Claims Support -->
+                <div class="flip-card">
+                    <div class="flip-inner shadow-xl">
+                        <div class="flip-front glass-silver border border-slate-200">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" class="mb-4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            <p class="text-[11px] font-black uppercase text-[#001B44] tracking-widest">Quem defende o cliente no sinistro</p>
+                        </div>
+                        <div class="flip-back">
+                            <p class="text-[10px] font-bold text-slate-600 uppercase leading-relaxed text-justify">Ao contrário de um agente directo, o corretor é o representante legal do segurado. Em caso de sinistro, a Angoseguros gere toda a burocracia e negociação técnica para garantir a justa indemnização</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Risk Analysis -->
+                <div class="flip-card">
+                    <div class="flip-inner shadow-xl">
+                        <div class="flip-front glass-silver border border-slate-200">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" class="mb-4"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                            <p class="text-[11px] font-black uppercase text-[#001B44] tracking-widest">Comparação vs Cobertura</p>
+                        </div>
+                        <div class="flip-back">
+                            <p class="text-[10px] font-bold text-slate-600 uppercase leading-relaxed text-justify">Mais do que o preço mais baixo, a consultoria analisa o "fine print". Garantimos que os riscos específicos da sua actividade comercial ou familiar estão efectivamente salvaguardados nas condições gerais</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MARQUEE PARCEIROS -->
+    <section class="py-16 relative z-10 border-y border-slate-100 bg-white/40 backdrop-blur-xl">
+        <div class="overflow-hidden flex">
+            <div class="animate-marquee whitespace-nowrap py-4">
+                <div class="mx-12 flex items-center gap-4 text-[#001B44] uppercase font-black tracking-tighter text-2xl">Ensa seguros</div>
+                <div class="mx-12 flex items-center gap-4 text-[#001B44] uppercase font-black tracking-tighter text-2xl">Fortaleza seguros</div>
+                <div class="mx-12 flex items-center gap-4 text-[#001B44] uppercase font-black tracking-tighter text-2xl">viva seguros</div>
+                <div class="mx-12 flex items-center gap-4 text-[#001B44] uppercase font-black tracking-tighter text-2xl">fidelidade seguros</div>
+                <div class="mx-12 flex items-center gap-4 text-[#001B44] uppercase font-black tracking-tighter text-2xl">Sanlam Allianz Angola</div>
+                <div class="mx-12 flex items-center gap-4 text-[#001B44] uppercase font-black tracking-tighter text-2xl">Nossa seguros</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contactos" class="py-16 px-6 border-t border-slate-100 text-center space-y-12 relative z-10 bg-white">
+        <div class="flex justify-center items-center gap-3">
+            <div class="bg-[#001B44] p-1.5 rounded-md shadow-lg"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="text-xl font-black tracking-tighter text-[#001B44] uppercase">ANGOSEGUROS</span>
+        </div>
+
+        <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-slate-500">
+           <div class="flex flex-col items-center gap-3">
+              <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Localização</span>
+              <p class="text-[11px] font-bold text-[#001B44] uppercase leading-relaxed">Urbanização Nova Vida<br>Rua 50 Edificio 209, Luanda</p>
+           </div>
+           <div class="flex flex-col items-center gap-3">
+              <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Atendimento</span>
+              <p class="text-[11px] font-bold text-[#001B44] uppercase leading-relaxed">931 717 970</p>
+           </div>
+           <div class="flex flex-col items-center gap-3">
+              <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Digital</span>
+              <p class="text-[11px] font-bold text-[#001B44] uppercase leading-relaxed">geral@angoseguros.ao</p>
+           </div>
+        </div>
+
+        <div class="flex justify-center gap-8 pt-4">
+            <button onclick="toggleModal('termsModal')" class="text-[11px] font-bold uppercase text-slate-500 hover:text-[#001B44] transition-colors tracking-widest">Termos Condições</button>
+            <button onclick="toggleModal('privacyModal')" class="text-[11px] font-bold uppercase text-slate-500 hover:text-[#001B44] transition-colors tracking-widest">Políticas de Privacidade</button>
+        </div>
+        <p class="text-slate-400 text-[8px] font-black tracking-widest uppercase leading-loose">© 2026 Angoseguros Corretora de Seguros Lda | Autorizada pela ARSEG</p>
+    </footer>
+
+    <!-- MODAL: CONTACTO (White Header/Sidebar) -->
+    <div id="contactModal" class="fixed inset-0 z-[400] flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-white/90 backdrop-blur-md" onclick="toggleModal('contactModal')"></div>
+        
+        <div class="relative w-full max-w-2xl bg-white shadow-2xl overflow-hidden animate-in zoom-in duration-300 flex flex-col md:flex-row min-h-[400px] rounded-[48px] border border-slate-100">
+            <!-- Form Header/Sidebar (Now purely white to match request) -->
+            <div class="md:w-1/3 bg-white p-8 flex flex-col justify-between text-[#001B44] relative border-r border-slate-100">
+                <div class="relative z-10 space-y-6 text-left">
+                    <h3 class="text-xl font-black uppercase tracking-tighter leading-tight">Proposta <br>Institucional</h3>
+                    <div class="space-y-4 pt-6 border-t border-slate-200">
+                        <p class="text-[9px] font-black uppercase tracking-widest leading-relaxed text-slate-400">A nossa equipa técnica analisará os seus dados para oferecer a cobertura adequada ao seu perfil</p>
+                    </div>
+                </div>
+                <div class="relative z-10 pt-10">
+                   <p class="text-[8px] uppercase font-black text-slate-300 tracking-[0.3em]">Compromisso com a Excelência</p>
+                </div>
+            </div>
+
+            <!-- Form Content (Puramente Branco) -->
+            <div id="modalContent" class="md:w-2/3 p-10 bg-white flex flex-col text-left">
+                <div class="flex justify-between items-center mb-10">
+                    <span class="font-black text-[#001B44] uppercase text-[11px] tracking-widest">Dados da Solicitação</span>
+                    <button onclick="toggleModal('contactModal')" class="p-2 hover:bg-slate-100 rounded-full text-[#001B44] transition-colors">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <form onsubmit="handleForm(event)" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-1">
+                            <label class="text-[8px] font-black uppercase text-slate-400 tracking-widest">Nome Completo</label>
+                            <input required type="text" class="w-full bg-white border-b border-slate-200 px-0 py-3 text-[11px] font-black uppercase text-[#001B44] focus:outline-none focus:border-[#001B44] transition-all placeholder:text-slate-300" placeholder="Ex: António Silva">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[8px] font-black uppercase text-slate-400 tracking-widest">Endereço Email</label>
+                            <input required type="email" class="w-full bg-white border-b border-slate-200 px-0 py-3 text-[11px] font-black uppercase text-[#001B44] focus:outline-none focus:border-[#001B44] transition-all placeholder:text-slate-300" placeholder="email@dominio.ao">
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[8px] font-black uppercase text-slate-400 tracking-widest">Tipo de Seguro Desejado</label>
+                        <select class="w-full bg-white border-b border-slate-200 px-0 py-3 text-[11px] font-black uppercase text-[#001B44] focus:outline-none focus:border-[#001B44] transition-all appearance-none cursor-pointer">
+                            <option>Seguro de Saúde</option>
+                            <option>Seguro Automóvel</option>
+                            <option>Seguro de Vida</option>
+                            <option>Acidentes de Trabalho</option>
+                            <option>Multirrisco Comercial</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[8px] font-black uppercase text-slate-400 tracking-widest">Urgência do Contacto</label>
+                        <div class="flex gap-6 pt-2">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" name="urgency" class="silver-pisco" checked>
+                                <span class="text-[10px] font-black uppercase text-slate-500 group-hover:text-[#001B44] transition-colors">Normal</span>
+                            </label>
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <input type="radio" name="urgency" class="silver-pisco">
+                                <span class="text-[10px] font-black uppercase text-slate-500 group-hover:text-[#001B44] transition-colors">Urgente</span>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-[#001B44] text-white py-4 font-black text-[10px] uppercase tracking-[0.25em] shadow-xl hover:bg-blue-900 transition-all transform active:scale-95 rounded-xl">Enviar Solicitação</button>
+                </form>
+            </div>
+            
+            <!-- Success State -->
+            <div id="modalSuccess" class="p-16 text-center space-y-8 hidden flex-1 items-center justify-center flex-col bg-white rounded-[48px]">
+                <div class="w-20 h-20 bg-slate-50 text-[#001B44] rounded-full flex items-center justify-center shadow-inner animate-bounce">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                <div class="space-y-3">
+                    <h3 class="text-3xl font-black text-[#001B44] uppercase tracking-tighter">Obrigado</h3>
+                    <p class="text-[10px] text-slate-400 uppercase font-black leading-relaxed max-w-[280px] mx-auto">Sua solicitação institucional foi recebida Informamos que o assunto será tratado com a maior brevidade possível pela nossa equipa técnica</p>
+                </div>
+                <button onclick="toggleModal('contactModal')" class="text-[10px] font-black text-[#001B44] uppercase tracking-[0.4em] border-b-2 border-[#001B44] pb-1">Voltar ao Portal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: TERMOS E CONDIÇÕES -->
+    <div id="termsModal" class="fixed inset-0 z-[400] flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-white/60 backdrop-blur-xl" onclick="toggleModal('termsModal')"></div>
+        <div class="relative w-full max-w-2xl bg-white rounded-[48px] shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-500">
+            <div class="bg-slate-50 px-8 py-6 border-b flex justify-between items-center text-left">
+                <span class="font-black text-[#001B44] uppercase text-[11px] tracking-widest leading-none">Termos Angoseguros</span>
+                <button onclick="toggleModal('termsModal')" class="p-2 hover:bg-slate-200 rounded-full text-[#001B44] transition-colors"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            </div>
+            <div class="p-8 text-left doc-modal-body text-slate-600 uppercase font-bold">
+                <p class="mb-4 silver-metallic">ANGOSEGUROS – CORRETORA DE SEGUROS LDA (Conforme Lei n.º 1/16, Lei n.º 7/15 e regulamentos ARSEG)</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">1 Introdução</h5><p>Os presentes Termos regulam o acesso aos serviços da ANGOSEGUROS, empresa autorizada pela ARSEG para intermediar negócios</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">2 Objecto dos Serviços</h5><p>Intermediação, consultoria, mediação de apólices e gestão de riscos perante as seguradoras angolanas</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">3 Relação com Seguradoras</h5><p>A empresa opera com todas as seguradoras licenciadas em Angola que aceitem intermediários</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">4 Obrigações do Cliente</h5><p>Fornecimento de dados verídicos e cumprimento de prazos de pagamento institucional</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">5 Obrigações da ANGOSEGUROS</h5><p>Aconselhamento transparente, ética e protecção de dados conforme a Lei n.º 22/11</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">6 Limitação de Responsabilidade</h5><p>A corretora não assume o risco financeiro; este é exclusivo das seguradoras parceiras</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">7 Propriedade Intelectual</h5><p>Todo o conteúdo deste website é propriedade da Angoseguros Corretora de Seguros Lda</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">8 Sinistros</h5><p>Assistência total na regulação e acompanhamento até ao pagamento final da indemnização</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">9 Resolução de Conflitos</h5><p>Privilegiamos a negociação amigável, sob a jurisdição do Tribunal da Comarca de Luanda</p>
+                <h5 class="text-[#001B44] mt-4 mb-2">10 Contactos Oficiais</h5><p>Telefone: 931 717 970 | Email: geral@angoseguros.ao | Luanda, Angola</p>
+            </div>
+            <div class="bg-slate-50 p-6 text-center border-t">
+                <button onclick="toggleModal('termsModal')" class="text-[11px] font-black text-[#001B44] uppercase tracking-widest border-b border-[#001B44] pb-1">Compreendi e Aceito</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: POLÍTICA DE PRIVACIDADE -->
+    <div id="privacyModal" class="fixed inset-0 z-[400] flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-white/60 backdrop-blur-xl" onclick="toggleModal('privacyModal')"></div>
+        <div class="relative w-full max-w-2xl bg-white rounded-[48px] shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-500">
+            <div class="bg-slate-50 px-8 py-6 border-b flex justify-between items-center text-left">
+                <span class="font-black text-[#001B44] uppercase text-[10px] tracking-widest leading-none">Privacidade Angoseguros</span>
+                <button onclick="toggleModal('privacyModal')" class="p-2 hover:bg-slate-200 rounded-full text-[#001B44] transition-colors"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            </div>
+            <div class="p-8 text-left doc-modal-body text-slate-600 uppercase font-bold">
+                <h5 class="text-[#001B44] mb-2">Compromisso de Privacidade</h5>
+                <p>A ANGOSEGUROS respeita a sua privacidade e protege os seus dados pessoais em conformidade com a Lei n.º 22/11 de Protecção de Dados Pessoais de Angola</p>
+                <h5 class="text-[#001B44] mt-6 mb-2">Recolha de Dados</h5>
+                <p>Recolhemos apenas os dados necessários para a cotação e intermediação de seguros: Nome, Email e informações sobre o risco</p>
+                <h5 class="text-[#001B44] mt-6 mb-2">Security</h5>
+                <p>Implementamos rigorosos protocolos de segurança digital para proteger as suas informações contra acessos não autorizados</p>
+            </div>
+            <div class="bg-slate-50 p-6 text-center border-t">
+                <button onclick="toggleModal('privacyModal')" class="text-[11px] font-black text-[#001B44] uppercase tracking-widest border-b border-[#001B44] pb-1">Fechar Documento</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function closeCookies() { document.getElementById('cookieBanner').style.display = 'none'; }
+        window.onscroll = function() {
+            const nav = document.getElementById('navbar');
+            if (window.pageYOffset > 50) nav.classList.add('bg-white/60', 'backdrop-blur-2xl', 'shadow-xl');
+            else nav.classList.remove('bg-white/60', 'backdrop-blur-2xl', 'shadow-xl');
+        };
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.toggle('hidden');
+            modal.classList.toggle('flex');
+            if (id === 'contactModal' && !modal.classList.contains('hidden')) {
+                document.getElementById('modalContent').classList.remove('hidden');
+                document.getElementById('modalSuccess').classList.add('hidden');
+                document.getElementById('modalContent').classList.add('flex');
+            }
+        }
+        function handleForm(e) {
+            e.preventDefault();
+            document.getElementById('modalContent').classList.add('hidden');
+            document.getElementById('modalContent').classList.remove('flex');
+            document.getElementById('modalSuccess').classList.remove('hidden');
+            document.getElementById('modalSuccess').classList.add('flex');
+        }
+        function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('hidden'); }
+    </script>
+</body>
+</html>
+
